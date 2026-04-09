@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RideNow Ultimate</title>
+
+<style>
+:root{
+  --primary:#FFB8BF;
+  --bg:#f3f4f6;
+}
+body{margin:0;font-family:sans-serif;background:var(--bg)}
+
+header{
+  background:linear-gradient(135deg,#ff5a7a,#FFB8BF);
+  color:#fff;padding:20px;text-align:center;
+  font-weight:bold;font-size:20px;
+}
+
+.page{display:none;padding:20px}
+.active{display:block}
+
+.menu{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:10px;
+}
+.menu div{
+  background:#fff;padding:15px;border-radius:15px;
+  text-align:center;cursor:pointer;
+  box-shadow:0 5px 12px rgba(0,0,0,0.1);
+}
+
+.card{
+  background:#fff;padding:15px;border-radius:15px;
+  margin-top:15px;box-shadow:0 5px 10px rgba(0,0,0,0.1);
+}
+
+input{
+  width:100%;padding:10px;margin:8px 0;
+  border-radius:10px;border:1px solid #ddd;
+}
+
+button{
+  width:100%;padding:8px;margin-top:5px;
+  border:none;background:var(--primary);
+  color:#fff;border-radius:10px;cursor:pointer;
+}
+
+.food-grid{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:10px;
+}
+.food-card{
+  background:#fff;border-radius:15px;overflow:hidden;
+  box-shadow:0 5px 10px rgba(0,0,0,0.1);
+}
+.food-card img{width:100%;height:120px;object-fit:cover}
+.food-card div{padding:10px}
+
+.qty{
+  display:flex;justify-content:space-between;align-items:center;
+}
+
+.bottom-nav{
+  position:fixed;bottom:0;width:100%;
+  background:#fff;display:flex;justify-content:space-around;
+  padding:10px;box-shadow:0 -3px 10px rgba(0,0,0,0.1);
+}
+
+.toast{
+  position:fixed;top:20px;left:50%;
+  transform:translateX(-50%);
+  background:#333;color:#fff;
+  padding:10px 20px;border-radius:10px;
+  display:none;
+}
+</style>
+</head>
+
+<body>
+
+<header>RideNow 🚀</header>
+
+<div id="toast" class="toast"></div>
+
+<!-- HOME -->
+<div id="home" class="page active">
+  <div class="menu">
+    <div onclick="showPage('ride')">🛵 Ride</div>
+    <div onclick="showPage('food')">🍔 Food</div>
+    <div onclick="showPage('send')">📦 Send</div>
+  </div>
+
+  <div class="card">🔥 Promo: Diskon 20% hari ini!</div>
+</div>
+
+<!-- RIDE -->
+<div id="ride" class="page">
+  <div class="card">
+    <h3>RideNow</h3>
+    <input id="pickup" placeholder="Lokasi Jemput">
+    <input id="dest" placeholder="Tujuan">
+    <button onclick="pesanRide()">Pesan</button>
+    <div id="rideResult"></div>
+  </div>
+</div>
+
+<!-- FOOD -->
+<div id="food" class="page">
+  <h3>FoodNow 🍔</h3>
+
+  <div class="food-grid">
+
+    <!-- ITEM -->
+    <div class="food-card">
+  <img src="http://4.bp.blogspot.com/-JgNfUwMgqRw/VbjRmRPIdLI/AAAAAAAAEcE/NflHjdGXKS4/s1600/IMG_3660.JPG">
+  <div>
+    Ayam Geprek<br>Rp 18.000
+    <button onclick="addCart('Ayam Geprek',18000)">+</button>
+  </div>
+</div>
+
+<div class="food-card">
+  <img src="https://thumbs.dreamstime.com/b/bakso-indonesian-meatball-soup-noodles-cuisine-65824566.jpg">
+  <div>
+    Bakso<br>Rp 12.000
+    <button onclick="addCart('Bakso',12000)">+</button>
+  </div>
+</div>
+
+<div class="food-card">
+  <img src="https://i.pinimg.com/originals/94/82/ab/9482ab2e248d249e7daa7fd6924c8d3b.jpg">
+  <div>
+    Nasi Goreng<br>Rp 15.000
+    <button onclick="addCart('Nasi Goreng',15000)">+</button>
+  </div>
+</div>
+
+<div class="food-card">
+  <img src="https://asset.kompas.com/crops/-EW4dZIFD3U055K4qtHqSgUg_hM=/92x67:892x600/1200x800/data/photo/2023/08/23/64e59deb79bfb.jpg">
+  <div>
+    Es Teh<br>Rp 5.000
+    <button onclick="addCart('Es Teh',5000)">+</button>
+  </div>
+</div>
+
+<div class="food-card">
+  <img src="https://dcostseafood.id/wp-content/uploads/2021/12/ES-JERUK-murni.jpg">
+  <div>
+    Es Jeruk<br>Rp 7.000
+    <button onclick="addCart('Es Jeruk',7000)">+</button>
+  </div>
+</div>
+  </div>
+
+  <div class="card">
+    <h4>Keranjang 🛒</h4>
+    <div id="cartList"></div>
+    <hr>
+    <b>Total: Rp <span id="total">0</span></b>
+    <button onclick="checkout()">Pesan</button>
+  </div>
+</div>
+
+<!-- SEND -->
+<div id="send" class="page">
+  <div class="card">
+    <h3>SendNow</h3>
+    <input placeholder="Lokasi Ambil">
+    <input placeholder="Tujuan">
+   <button onclick="kirimBarang()">Kirim</button>
+<div id="sendResult"></div>
+
+  </div>
+</div>
+
+<div class="bottom-nav">
+  <div onclick="showPage('home')">🏠</div>
+  <div onclick="showPage('ride')">🛵</div>
+  <div onclick="showPage('food')">🍔</div>
+  <div onclick="showPage('send')">📦</div>
+</div>
+
+<script>
+let cart = {};
+
+function kirimBarang(){
+ let result = document.getElementById("sendResult");
+
+ result.innerText = "📦 Barang dijemput kurir...";
+ showToast("Kurir menuju lokasi!");
+
+ setTimeout(function(){
+   result.innerText = "🚚 Barang sedang dikirim...";
+   showToast("Barang dalam perjalanan");
+
+   setTimeout(function(){
+     result.innerText = "✅ Barang sudah sampai!";
+     showToast("Pengiriman selesai 🎉");
+   },3000);
+
+ },5000);
+}
+
+function showPage(p){
+ document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
+ document.getElementById(p).classList.add('active');
+}
+
+function showToast(msg){
+ let t=document.getElementById("toast");
+ t.innerText=msg;
+ t.style.display="block";
+ setTimeout(()=>t.style.display="none",2000);
+}
+
+function pesanRide(){
+ let p = document.getElementById('pickup').value;
+ let d = document.getElementById('dest').value;
+ let result = document.getElementById('rideResult');
+
+ if(!p || !d){
+   showToast("Isi lokasi dulu!");
+   return;
+ }
+
+ result.innerText = "🚖 Driver menuju lokasi...";
+ showToast("Driver ditemukan!");
+
+ setTimeout(function(){
+   result.innerText = "📍 Driver sudah sampai!";
+   showToast("Driver sudah sampai!");
+
+   setTimeout(function(){
+     result.innerText = "✅ Perjalanan selesai";
+     showToast("Perjalanan selesai 🎉");
+   }, 3000);
+
+ }, 5000);
+}
+function addCart(nama,harga){
+ if(!cart[nama]){
+   cart[nama]={harga:harga,qty:1};
+ } else {
+   cart[nama].qty++;
+ }
+ renderCart();
+ showToast(nama+" ditambahkan");
+}
+
+function removeItem(nama){
+ delete cart[nama];
+ renderCart();
+}
+
+function renderCart(){
+ let list=document.getElementById("cartList");
+ list.innerHTML="";
+ let total=0;
+
+ for(let item in cart){
+   let data=cart[item];
+   let subtotal=data.harga*data.qty;
+   total+=subtotal;
+
+   list.innerHTML+=`
+   <div>
+   ${item} (${data.qty}) - Rp ${subtotal}
+   <button onclick="removeItem('${item}')">❌</button>
+   </div>`;
+ }
+
+ document.getElementById("total").innerText=total.toLocaleString();
+}
+
+function checkout(){
+ if(Object.keys(cart).length===0){
+   showToast("Keranjang kosong!");
+   return;
+ }
+
+ showToast("Pesanan diproses 🍳");
+
+ let list = document.getElementById("cartList");
+ list.innerHTML = "<b>🍳 Makanan sedang diproses...</b>";
+
+ // Step 2
+ setTimeout(function(){
+   list.innerHTML = "<b>🛵 Driver sedang mengantar...</b>";
+   showToast("Pesanan diantar!");
+
+   // Step 3
+   setTimeout(function(){
+     list.innerHTML = "<b>✅ Pesanan sudah sampai!</b>";
+     showToast("Selamat menikmati 🍴");
+
+     cart = {};
+     renderCart();
+   }, 3000);
+
+ }, 5000);
+
+}</script>
+
+</body>
+</html>

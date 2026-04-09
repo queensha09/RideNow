@@ -1,2 +1,0 @@
-# RideNow
-website ojek online
