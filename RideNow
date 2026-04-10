@@ -63,11 +63,17 @@ header{
   font-size:22px;
   letter-spacing:1px;
   box-shadow:0 3px 10px rgba(0,0,0,0.1);
-}
+
 }
 
-.page{display:none;padding:20px}
-.active{display:block}
+.page{
+  display:none;
+  padding:20px;
+}
+
+.page.active{
+  display:block;
+}
 
 .menu{
   display:grid;
@@ -103,7 +109,6 @@ header{
 
 .card:hover{
   transform:translateY(-3px);
-}
 }
 
 input{
@@ -170,6 +175,22 @@ button:hover{
   padding:10px 20px;border-radius:10px;
   display:none;
 }
+
+.page{
+  display:none;
+  padding:20px;
+  animation:fade 0.3s;
+}
+
+.page.active{
+  display:block;
+}
+
+@keyframes fade{
+  from{opacity:0;}
+  to{opacity:1;}
+}
+
 </style>
 </head>
 
@@ -214,14 +235,6 @@ button:hover{
     🔥 Diskon 20% untuk pengguna baru!
   </div>
 
-</div>
-  <div class="menu">
-    <div onclick="showPage('ride')">🛵 Ride</div>
-    <div onclick="showPage('food')">🍔 Food</div>
-    <div onclick="showPage('send')">📦 Send</div>
-  </div>
-
-  <div class="card">🔥 Promo: Diskon 20% hari ini!</div>
 </div>
 
 <!-- RIDE -->
