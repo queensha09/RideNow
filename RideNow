@@ -204,7 +204,7 @@ button:hover{
 <div id="home" class="page active">
 
   <!-- HERO -->
-  <div class="card hero">
+  <div class="hero">
     <h1>RideNow 🚀</h1>
     <h3>Semua Kebutuhanmu, Dalam Satu Aplikasi</h3>
     <p>
